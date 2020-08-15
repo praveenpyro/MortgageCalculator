@@ -1,0 +1,153 @@
+<div class="justify-content-center">
+  <div class="row justify-content-md-center">
+    <div class="col-md-8">
+      <form [formGroup]="mortgageForm" novalidate>
+        <div class="row mt-2">
+          <div class="col-md-12 text-center">
+            <div class="alert alert-primary" role="alert">
+              <h4> Mortgage Calculator</h4>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-12">
+            <div class="card primary-border ">
+              <h5 class="card-header primary-bg">Payment Plan</h5>
+              <div class="card-body">
+                <div class="row mb-3">
+                  <label class="col-5 ">Mortgage Amount:</label>
+                  <div class="col input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">$</span>
+                    </div>
+                    <input type="number" required class="form-control" aria-label="Mortgage Amount:"
+                      formControlName="mortgageAmount">
+
+                  </div>
+                </div>
+                <div class="alert alert-danger" role="alert"
+                  *ngIf="this.mortgageForm.controls['mortgageAmount'].invalid">
+                  Error 1: Please enter an amount greater than 0 with a maximum of 2 decimal places. Enter "." as a
+                  decimal
+                  separator and "," as a thousand separator.
+                </div>
+                <div class="row mb-3">
+                  <label class="col-5"> Interest Rate:</label>
+                  <div class="col input-group">
+                    <input type="number" class="form-control" aria-label="Interest Rate" formControlName="intrestRate">
+                    <div class="input-group-append">
+                      <span class="input-group-text">%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="alert alert-danger" role="alert" *ngIf="this.mortgageForm.controls['intrestRate'].invalid">
+                  Error 1: Please enter a percent greater than 0 and less than 100 with a maximum of 2 decimal places.
+                  Enter
+                  "." as a decimal separator.
+                </div>
+                <div class="row mb-3">
+                  <label class="col-5"> Amortization Period:</label>
+                  <div class="col input-group">
+                    <select class="col-md-6 mr-1 custom-select" formControlName="amortizationYears">
+                      <option [value]=""></option>
+                      <option *ngFor="let period of amortizationPeriod_years" [value]="period">{{period}} years</option>
+                    </select>
+                    <select class="col-md-6 custom-select" formControlName="amortizationMonths">
+                      <option [value]=""></option>
+                      <option *ngFor="let month of amortizationPeriod_months" [value]="month">{{month}} month</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="alert alert-danger" role="alert"
+                  *ngIf="this.mortgageForm.controls['amortizationYears'].invalid || this.mortgageForm.controls['amortizationMonths'].invalid ">
+                  Error 1: The value you entered in the field 'Amortization Period' is not valid.
+                </div>
+                <div class="row mb-3">
+                  <label class="col-5"> Payment Frequency:</label>
+                  <div class="col input-group">
+                    <select class="custom-select" formControlName="paymentFrequency">
+                      <option *ngFor="let frequency of paymentFrequency" [value]="frequency.value">{{frequency.label}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-5"> Term:</label>
+                  <div class="col input-group">
+                    <select class="custom-select col" formControlName="term">
+                      <option *ngFor="let term of terms" [value]="term">{{term}} years</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <div class="card primary-border ">
+              <h5 class="card-header primary-bg">Prepayment Plan</h5>
+              <div class="card-body">
+                <div class="row mb-3">
+                  <label class="col-5">Prepayment Amount:</label>
+                  <div class=" col input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">$</span>
+                    </div>
+                    <input type="number" class="form-control" aria-label="Prepayment Amount"
+                      formControlName="prepaymentAmount">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-5"> Payment Frequency:</label>
+                  <div class="col input-group">
+                    <select class="custom-select col" formControlName="paymenrFrequencyPreplan">
+                      <option *ngFor="let frequency of paymentFrequency_prepayment" [value]="frequency.value">
+                        {{frequency.label}} </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-5">Start With Payment:</label>
+                  <div class="col input-group">
+                    <input type="number" class="form-control" aria-label="Start With Payment"
+                      formControlName="startwithPayment">
+                  </div>
+                </div>
+                <div class="alert alert-danger" role="alert"
+                  *ngIf="this.mortgageForm.controls['startwithPayment'].invalid">
+                  Error 2: Please enter a valid whole number greater than 0
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button [disabled]="this.mortgageForm.invalid" type="button" class="btn btn-primary m-2 "
+            (click)="calculateMortgage()">Calculate</button>
+        </div>
+        <div class="row">
+
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead class="primary-bg">
+                <tr>
+                  <th scope="col">Category</th>
+                  <th scope="col">Term</th>
+                  <th scope="col">Amortization Period</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let mortgage of mortgageResults">
+                  <td>{{mortgage.catagoty}}</td>
+                  <td>${{mortgage.term }}</td>
+                  <td>${{mortgage.ammortizationPeriod}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
