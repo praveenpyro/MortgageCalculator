@@ -10,15 +10,15 @@ import { KeyValue } from '../interface/KeyValue';
   styleUrls: ['./mortgage-calculator.component.css']
 })
 export class MortgageCalculatorComponent implements OnInit {
-  private title: string;
-  private amortizationPeriod_years : number[];
-  private amortizationPeriod_months :number[];
-  private paymentFrequency: KeyValue[];
-  private terms: number[];
-  private paymentFrequency_prepayment:KeyValue[];
-  private mortgageForm: FormGroup;
+  public title: string;
+  public amortizationPeriod_years : number[];
+  public amortizationPeriod_months :number[];
+  public paymentFrequency: KeyValue[];
+  public terms: number[];
+  public paymentFrequency_prepayment:KeyValue[];
+  public mortgageForm: FormGroup;
   public mortgageResults : Mortgage[];
-  constructor( private fb: FormBuilder, public mortgageHelper : MortgageHelperService) {
+  constructor( public fb: FormBuilder, public mortgageHelper : MortgageHelperService) {
 
   }
   ngOnInit()  {
@@ -27,10 +27,10 @@ export class MortgageCalculatorComponent implements OnInit {
     this.calculateMortgage();
   }
 
-  private initValues(): void {
-    this.title = 'MortgageCalculator';
+  public initValues(): void {
+    this.title = 'Mortgage Calculator';
     this.amortizationPeriod_years =  Array(25).fill(25).map((x,i)=>i+1);
-    this.amortizationPeriod_months =  Array(11).fill(11).map((x,i)=>i+1);
+    this.amortizationPeriod_months =  Array(12).fill(12).map((x,i)=>i+1);
     this.paymentFrequency = [
     {label : "Accelerated Weekly", value:7},
     {label : "Accelerated Bi-weekly", value:7},
@@ -44,7 +44,7 @@ export class MortgageCalculatorComponent implements OnInit {
       {label : "Same as regular payment", value:1}];
   }
 
-  private createFormGroup(fb: FormBuilder) : void {
+  public createFormGroup(fb: FormBuilder) : void {
     this.mortgageForm = fb.group({
       mortgageAmount:[100000,[Validators.required]],
       intrestRate:["5.00",[Validators.required]],
@@ -59,7 +59,6 @@ export class MortgageCalculatorComponent implements OnInit {
   }
 
   public calculateMortgage() : void {
-    console.log(this.mortgageForm.value);
     this.mortgageResults = this.mortgageHelper.calculateMortgage(this.mortgageForm.value);
   }
   

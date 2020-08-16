@@ -4,7 +4,7 @@ import { MortgageHelperService } from './mortgage-helper.service';
 import { PaymentPlan } from '../interface/PaymentPlan';
 import { Mortgage } from '../interface/Mortgage';
 describe('MortgageHelperService', () => {
-  let paymentPlanObject: PaymentPlan = {
+  const paymentPlanObject: PaymentPlan = {
     mortgageAmount : 100000,
     intrestRate: 5,
     amortizationYears:25,
